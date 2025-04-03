@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthForm, InputField } from "../components";
+import { AuthForm, InputField } from ".";
 import supabase from "../config/supabaseClient";
+import { useSession } from "../providers/SessionContext";
 
-const SignUp = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { setCurrentUser } = useSession();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) return setMessage(error.message);
-    navigate("/login");
+    setCurrentUser(data.user.email);
+    navigate("/recipes");
   };
 
   return (
     <AuthForm
-      title="Sign Up"
-      subtitle="Create an account to get started."
-      buttonText="Sign Up"
+      title="Login"
+      subtitle="Welcome back! Please enter your details."
+      buttonText="Login"
       onSubmit={handleSubmit}
     >
       <InputField
@@ -37,16 +43,15 @@ const SignUp = () => {
       />
       {message && <p className="text-red-500 text-center">{message}</p>}
       <p className="text-center text-sm mt-2">
-        Already have an account?{" "}
         <span
           className="text-blue-500 cursor-pointer"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/forgot-password")}
         >
-          Login
+          Forgot password?
         </span>
       </p>
     </AuthForm>
   );
 };
 
-export default SignUp;
+export default Login;

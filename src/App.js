@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import { Login, Signup } from "./components";
+import { ForgotPassword, Login, Signup } from "./pages";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         <Route path="/" element={<Navigate to="/recipes" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<Navigate to="/recipes" />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/" element={<Navigate to="/recipes" />}>
           <Route path="recipes" element={<Navigate to="/recipes" />} />
           <Route path="createRecipe" element={<Navigate to="/recipes" />} />
